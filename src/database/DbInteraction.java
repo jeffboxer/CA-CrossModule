@@ -1030,8 +1030,421 @@ public class DbInteraction {
         }
 
     }
+/**
+     * This method uses the SQL command SELECT to validate if a username is
+     * already in our Database. It has connection with our Database. This method
+     * is used while modifying a user.
+     */
+    public void alreadyAUser2(String username) throws Exception {
+        try {
 
+            Connection con = getConnection();
+            PreparedStatement stmt = con.prepareStatement("SELECT user_type,user_id FROM users WHERE user_username=?");
+            stmt.setString(1, username);
+            ResultSet result = stmt.executeQuery();
 
+            if (result.next()) {
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("Username already taken!");
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                modifyAllUsers(result.getInt("user_id"));
 
+            }
+            con.close();
+            stmt.close();
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void modifyAllUsers(int user_id) throws Exception {
+        try {
+
+            Connection con = getConnection();
+            PreparedStatement select = con.prepareStatement("SELECT user_name,user_username,user_type,user_status FROM users WHERE user_id = ?");
+            select.setInt(1, user_id);
+            ResultSet result = select.executeQuery();
+
+            while (result.next()) {
+
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("What information from " + result.getString("user_name") + " would you like to change ?");
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("Please type the number related to the options below:");
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("1) Name:");
+                System.out.println("2) Last Name:");
+                System.out.println("3) Username:");
+                System.out.println("4) Password:");
+                System.out.println("5) User Type (Admin or Regular user):");
+                System.out.println("6) User Status (Enabled or Disabled):");
+                System.out.println("7) Back to Admin Menu:");
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+
+                String option = s.next();
+
+                if (!option.matches("[0-9]+")) {
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                    System.out.println("Not a valid option!");
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                    modifyAllUsers(user_id);
+                } else {
+
+                    switch (Integer.parseInt(option)) {
+                        case 1:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Please type the new Name for " + result.getString("user_name") + ".");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            String name = s.next();
+                            updateName(name, result.getString("user_username"));
+                            break;
+                        case 2:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Please type the new Last Name for " + result.getString("user_name") + ".");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            String lastName = s.next();
+                            updateLastName(lastName, result.getString("user_username"));
+
+                            break;
+                        case 3:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Please type the new Username for " + result.getString("user_name") + ".");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            String username = s.next();
+                            updateUsername(username, result.getString("user_name"));
+
+                            break;
+                        case 4:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Please type the new Password for " + result.getString("user_name") + ".");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            String password = s.next();
+                            updatePassword(password, result.getString("user_username"));
+
+                            break;
+                        case 5:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Please type the new Type for " + result.getString("user_name") + ".");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("1) Admin.");
+                            System.out.println("2) Regular User.");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            String uType = s.next();
+
+                            if (!uType.matches("[0-9]+")) {
+                                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                                System.out.println("Not a valid option!");
+                                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                                modifyAllUsers(user_id);
+                            } else {
+
+                                switch (Integer.parseInt(uType)) {
+                                    case 1:
+                                        updateUserType(Integer.parseInt(uType), result.getString("user_username"));
+                                        break;
+                                    case 2:
+                                        updateUserType(Integer.parseInt(uType), result.getString("user_username"));
+                                        break;
+                                    default:
+                                        System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                                        System.out.println("Not a valid option!");
+                                        System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                                        modifyAllUsers(user_id);
+                                }
+
+                            }
+
+                        case 6:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Please type the new Status for " + result.getString("user_name") + ".");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("1) Enabled.");
+                            System.out.println("2) Disabled.");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            String status = s.next();
+
+                            if (!status.matches("[0-9]+")) {
+                                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                                System.out.println("Not a valid option!");
+                                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                                modifyAllUsers(user_id);
+                            } else {
+
+                                switch (Integer.parseInt(status)) {
+                                    case 1:
+
+                                        enableUser(user_id);
+                                        modifyAllUsers(user_id);
+                                        break;
+                                    case 2:
+                                        deleteUser(user_id);
+                                        modifyAllUsers(user_id);
+                                        break;
+                                    default:
+                                        System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                                        System.out.println("Not a valid option!");
+                                        System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                                        modifyAllUsers(user_id);
+                                }
+                            }
+
+                        case 7:
+                            menuAdmin();
+                            break;
+                        default:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Not a valid option!");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            modifyAllUsers(user_id);
+                    }
+                }
+
+            }
+
+        } catch (Exception e) {
+        }
+    }
+
+    public void modifyOwnUser(String username) throws Exception {
+        try {
+
+            Connection con = getConnection();
+            PreparedStatement select = con.prepareStatement("SELECT user_id,user_name,user_username FROM users WHERE user_username = ?");
+            select.setString(1, username);
+            ResultSet result = select.executeQuery();
+
+            while (result.next()) {
+
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("What information from " + result.getString("user_name") + " would you like to change ?");
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("Please type the number related to the options below:");
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                System.out.println("1) Name:");
+                System.out.println("2) Last Name:");
+                System.out.println("3) Username:");
+                System.out.println("4) Password:");
+                System.out.println("5) Back to User Menu:");
+                System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+
+                String option = s.next();
+
+                if (!option.matches("[0-9]+")) {
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                    System.out.println("Not a valid option!");
+                    System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                    modifyOwnUser(this.getUsername());
+                } else {
+
+                    switch (Integer.parseInt(option)) {
+                        case 1:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Please type the new Name for " + result.getString("user_name") + ".");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            String name = s.next();
+                            updateName(name, result.getString("user_username"));
+                            break;
+                        case 2:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Please type the new Last Name for " + result.getString("user_name") + ".");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            String lastName = s.next();
+                            updateLastName(lastName, result.getString("user_username"));
+
+                            break;
+                        case 3:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Please type the new Username for " + result.getString("user_name") + ".");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            String nusername = s.next();
+                            updateUsername(nusername, result.getString("user_name"));
+
+                            break;
+                        case 4:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Please type the new Password for " + result.getString("user_name") + ".");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            String password = s.next();
+                            updatePassword(password, result.getString("user_username"));
+
+                            break;
+
+                        case 5:
+                            menuUser();
+                            break;
+                        default:
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            System.out.println("Not a valid option!");
+                            System.out.println("--------------------------------------------------------------------------------------------------------------------------");
+                            modifyOwnUser(username);
+                    }
+                }
+
+            }
+
+            con.close();
+            select.close();
+            result.close();
+        } catch (Exception e) {
+        }
+    }
+
+    public void updateName(String name, String username) throws Exception {
+
+        try {
+
+            Connection con = getConnection();
+            PreparedStatement update = con.prepareStatement("UPDATE users SET user_name = ? WHERE user_username = ?");
+            update.setString(1, name);
+            update.setString(2, username);
+            update.executeUpdate();
+            con.close();
+            if (this.getType() == 1) {
+                goBackAdmin();
+            } else {
+                goBackUser();
+            }
+
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void updateLastName(String lastName, String username) throws Exception {
+
+        try {
+
+            Connection con = getConnection();
+            PreparedStatement update = con.prepareStatement("UPDATE users SET user_last_name = ? WHERE user_username = ?");
+            update.setString(1, lastName);
+            update.setString(2, username);
+            update.executeUpdate();
+            con.close();
+            if (this.getType() == 1) {
+                goBackAdmin();
+            } else {
+                goBackUser();
+            }
+
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void updateUsername(String username, String name) throws Exception {
+
+        try {
+
+            alreadyAUser2(username);
+
+            Connection con = getConnection();
+            PreparedStatement update = con.prepareStatement("UPDATE users SET user_username = ? WHERE user_name = ?");
+            update.setString(1, username);
+            update.setString(2, name);
+            update.executeUpdate();
+            con.close();
+            if (this.getType() == 1) {
+                goBackAdmin();
+            } else {
+                goBackUser();
+            }
+
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void updatePassword(String password, String username) throws Exception {
+
+        try {
+
+            Connection con = getConnection();
+            PreparedStatement update = con.prepareStatement("UPDATE users SET user_password = ? WHERE user_username = ?");
+            update.setString(1, password);
+            update.setString(2, username);
+            update.executeUpdate();
+            con.close();
+            if (this.getType() == 1) {
+                goBackAdmin();
+            } else {
+                goBackUser();
+            }
+
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void updateUserType(int uType, String username) throws Exception {
+
+        try {
+
+            Connection con = getConnection();
+            PreparedStatement update = con.prepareStatement("UPDATE users SET user_type = ? WHERE user_username = ?");
+            update.setInt(1, uType);
+            update.setString(2, username);
+            update.executeUpdate();
+            con.close();
+            goBackAdmin();
+
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void deleteUser(int deleteid) throws Exception {
+
+        try {
+
+            Connection con = getConnection();
+            PreparedStatement update = con.prepareStatement("UPDATE users SET user_status = ? WHERE user_id = ?");
+            update.setInt(1, 2);
+            update.setInt(2, deleteid);
+            update.executeUpdate();
+            con.close();
+            goBackAdmin();
+
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void enableUser(int enableid) throws Exception {
+
+        try {
+
+            Connection con = getConnection();
+            PreparedStatement update = con.prepareStatement("UPDATE users SET user_status = '" + 1 + "' WHERE user_id = ?");
+
+            update.setInt(1, enableid);
+            update.executeUpdate();
+            con.close();
+            goBackAdmin();
+
+        } catch (Exception e) {
+        }
+
+    }
+
+    public void idCheck(int id) throws Exception {
+
+        try {
+            Connection con = getConnection();
+            PreparedStatement update = con.prepareStatement("SELECT user_name FROM users WHERE user_id = '" + id + "' AND user_status = '" + 1 + "'");
+            ResultSet result = update.executeQuery();
+
+            if (!result.next()) {
+                System.out.println("Not a valid ID!");
+            }
+            con.close();
+            update.close();
+
+        } catch (Exception e) {
+        }
+    }
 
 }
+
+
+
+
