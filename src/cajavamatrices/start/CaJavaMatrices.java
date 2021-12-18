@@ -4,17 +4,25 @@
  */
 package cajavamatrices.start;
 
+import database.DbInteraction;
+
+
 /**
  *
  * @author Jefferson
  */
 public class CaJavaMatrices {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
+
+    public static void main(String[] args) throws Exception  {
+        
+        /*
+        My main class creates an object of the type DbInteraction
+        which will access its constructor and run its first method that will be calling other methods according to the necessity. 
+        */
+        DbInteraction db = new DbInteraction();
+ 
+        
     }
     
 }
