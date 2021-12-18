@@ -6,7 +6,8 @@ package cajavamatrices;
 
 /**
  *
- * @author Jefferson
+ * @author Jefferson Pereira de Matos 2019385
+ * @author Andre Goncalves 2020195
  */
 public interface Matrix3x3Interface {
 
