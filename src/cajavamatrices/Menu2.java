@@ -11,6 +11,7 @@ import java.util.Scanner;
  *
  * @author Jefferson Pereira de Matos 2019385
  * @author Andre Goncalves 2020195
+ * GitHub:https://github.com/jeffboxer/CA-CrossModule
  */
 public class Menu2 {
 
@@ -23,7 +24,7 @@ public class Menu2 {
 
     private int eqS[] = {0, 0, 0, 0, 0, 0, 0, 0, 0}; // This array stores all the coeficients from all three equations.
     private int eTot[] = {0, 0, 0}; // This array stores all the constants .
-    private String var, var1, var2, var3; // Variables using along the code.
+    private String var, var1, var2, var3; // Variables used along the code.
 
     //Getters and Setters
     public int[] getEqS() {
@@ -177,7 +178,7 @@ public class Menu2 {
             this.eTot[2] = Integer.parseInt(g[4]);
 
         } catch (Exception e) {
-            System.out.println("The quation typed is incorrect! Please Try again!");
+            System.out.println("The equation typed is incorrect! Please Try again!");
             Menu2();
         }
     }

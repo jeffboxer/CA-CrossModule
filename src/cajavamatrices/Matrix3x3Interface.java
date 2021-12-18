@@ -8,6 +8,7 @@ package cajavamatrices;
  *
  * @author Jefferson Pereira de Matos 2019385
  * @author Andre Goncalves 2020195
+ * GitHub:https://github.com/jeffboxer/CA-CrossModule
  */
 public interface Matrix3x3Interface {
 

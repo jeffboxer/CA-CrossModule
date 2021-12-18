@@ -14,7 +14,9 @@ import java.util.Scanner;
 
 /**
  *
- * @author Jefferson
+ * @author Jefferson Pereira de Matos 2019385
+ * @author Andre Goncalves 2020195
+ * GitHub:https://github.com/jeffboxer/CA-CrossModule
  */
 public class DbInteraction {
 
@@ -321,7 +323,7 @@ public class DbInteraction {
     }
 
     /**
-     * This the username creation. It has connection with our Database. For
+     * This is the username creation. It has connection with our Database. For
      * every option available during the registration, the program will ask the
      * user if he wants to confirm the option previously typed by him or cancel
      * it. If the username chosen already exist, it wont let the user choose it
@@ -1030,7 +1032,8 @@ public class DbInteraction {
         }
 
     }
-/**
+
+    /**
      * This method uses the SQL command SELECT to validate if a username is
      * already in our Database. It has connection with our Database. This method
      * is used while modifying a user.
@@ -1057,6 +1060,11 @@ public class DbInteraction {
 
     }
 
+    /**
+     * This method uses the SQL command SELECT to get information from users in our DB.
+     * It has connection with our Database.
+     * This method calls other update methods below depending on what user wants to change.
+     */
     public void modifyAllUsers(int user_id) throws Exception {
         try {
 
@@ -1289,6 +1297,11 @@ public class DbInteraction {
         }
     }
 
+    /**
+     * This method uses the SQL command UPDATE to modify the user`s name in our
+     * Database. It has connection with our Database. This method is used while
+     * modifying a user.
+     */
     public void updateName(String name, String username) throws Exception {
 
         try {
@@ -1310,6 +1323,11 @@ public class DbInteraction {
 
     }
 
+    /**
+     * This method uses the SQL command UPDATE to modify the user`s last name in
+     * our Database. It has connection with our Database. This method is used
+     * while modifying a user.
+     */
     public void updateLastName(String lastName, String username) throws Exception {
 
         try {
@@ -1331,10 +1349,15 @@ public class DbInteraction {
 
     }
 
+    /**
+     * This method uses the SQL command UPDATE to modify the user`s username in
+     * our Database. It has connection with our Database. This method is used
+     * while modifying a user.
+     */
     public void updateUsername(String username, String name) throws Exception {
 
         try {
-
+            //First checks if the username already exists in our Database.
             alreadyAUser2(username);
 
             Connection con = getConnection();
@@ -1354,6 +1377,11 @@ public class DbInteraction {
 
     }
 
+    /**
+     * This method uses the SQL command UPDATE to modify the user`s password in
+     * our Database. It has connection with our Database. This method is used
+     * while modifying a user.
+     */
     public void updatePassword(String password, String username) throws Exception {
 
         try {
@@ -1375,6 +1403,11 @@ public class DbInteraction {
 
     }
 
+    /**
+     * This method uses the SQL command UPDATE to modify the user`s type in our
+     * Database 1 for Admin 2 for Regular User. It has connection with our
+     * Database. This method is used while modifying a user.
+     */
     public void updateUserType(int uType, String username) throws Exception {
 
         try {
@@ -1392,6 +1425,11 @@ public class DbInteraction {
 
     }
 
+    /**
+     * This method uses the SQL command UPDATE to modify the user`s status in
+     * our Database, 2 for Disabled. It has connection with our Database. This
+     * method is used while modifying a user.
+     */
     public void deleteUser(int deleteid) throws Exception {
 
         try {
@@ -1409,6 +1447,11 @@ public class DbInteraction {
 
     }
 
+    /**
+     * This method uses the SQL command UPDATE to modify the user`s status in
+     * our Database 1 for Enabled. It has connection with our Database. This
+     * method is used while modifying a user.
+     */
     public void enableUser(int enableid) throws Exception {
 
         try {
@@ -1426,6 +1469,11 @@ public class DbInteraction {
 
     }
 
+    /**
+        * This method uses the SQL command SELECT to get the user`s id in
+     * our Database.It has connection with our
+     * Database. This method is used while modifying a user.
+     */
     public void idCheck(int id) throws Exception {
 
         try {
@@ -1444,7 +1492,3 @@ public class DbInteraction {
     }
 
 }
-
-
-
-
