@@ -1068,7 +1068,7 @@ public class DbInteraction {
             while (result.next()) {
 
                 System.out.println("--------------------------------------------------------------------------------------------------------------------------");
-                System.out.println("What information from " + result.getString("user_name") + " would you like to change ?");
+                System.out.println("What information would you like to change ?");
                 System.out.println("--------------------------------------------------------------------------------------------------------------------------");
                 System.out.println("Please type the number related to the options below:");
                 System.out.println("--------------------------------------------------------------------------------------------------------------------------");
