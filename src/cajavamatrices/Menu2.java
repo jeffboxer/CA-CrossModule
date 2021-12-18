@@ -100,7 +100,6 @@ public class Menu2 {
             this.eqS[2] = Integer.parseInt(e[2]);
             this.eTot[0] = Integer.parseInt(e[4]);
 
-            System.out.println();
 
             System.out.println("Please type your second equation ( example : x+3y-10z=15) : ");
             var2 = r.nextLine();
